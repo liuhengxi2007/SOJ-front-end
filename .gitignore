@@ -6,6 +6,3 @@ uploads/*
 utility/
 pictures/
 js/mathjax/
-app/locale/basic/zh-en.php
-app/locale/contests/zh-en.php
-app/locale/problems/zh-en.php
