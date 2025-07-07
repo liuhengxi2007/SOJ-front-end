@@ -23,6 +23,16 @@
 	<div class="panel-body">
 		<?php if ($blog_type == 'blog'): ?>
 		<article><?= $content ?></article>
+		<script>
+			document.querySelectorAll('a.soj_iframe_doc').forEach(anchor => {
+				const iframe = document.createElement('iframe');
+				iframe.src = anchor.getAttribute('href');
+				iframe.title = anchor.textContent;
+				iframe.width = "100%";
+				iframe.height = "700px";
+				anchor.parentNode.replaceChild(iframe, anchor);
+			});
+		</script>
 		<?php elseif ($blog_type == 'slide'): ?>
 		<article>
 			<div class="embed-responsive embed-responsive-16by9">

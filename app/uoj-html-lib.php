@@ -321,7 +321,7 @@ function echoSubmission($submission, $config, $user) {
 	$limitLevel = querySubmissionDetailPermission($user, $submission);
 	$problem = queryProblemBrief($submission['problem_id']);
 	$status = explode(', ', $submission['status'])[0];
-	$show_status_details = isOurSubmission($user, $submission) && $status !== 'Judged';
+	$show_status_details = (isOurSubmission($user, $submission) || isSuperUser(Auth::user())) && $status !== 'Judged';
 	$submission_uri = getSubmissionUri($submission['id']);
 
 	$submission_id_str = getSubmissionLink($submission['id']);
