@@ -8,7 +8,7 @@
 		redirectToLogin();
 	}
 
-	if(!isProblemCreator(Auth::user()) && !isBlogAllowedUser(Auth::user())) {
+	if(!isProblemCreator(Auth::user())) {
 		become403Page();
 	}
 
@@ -53,37 +53,39 @@
 	$div_classes = array('table-responsive');
 	$table_classes = array('table', 'table-bordered', 'table-hover', 'table-striped');
 
+	$proposal = DB::selectFirst("select * from collection_proposal");
+
 	$append_form = new UOJForm('append');
 
-	$append_form->addInput('id', 'text', 'id', '',
+	$append_form->addInput('id', 'text', 'id', $proposal['id'],
 		function($result) {
 			if(!preg_match('/^-?[a-z0-9]{1,12}$/', $result)) return '题号长度不能超过 12，且只能包含小写字母和数字';
 			return '';
 		},
 		null
 	);
-	$append_form->addInput('title', 'text', 'title', '',
+	$append_form->addInput('title', 'text', 'title', $proposal['title'],
 		function($result) {
 			if(strlen($result) > 100) return '长度不能超过 100 byte';
 			return '';
 		},
 		null
 	);
-	$append_form->addInput('url', 'text', 'url', '',
+	$append_form->addInput('url', 'text', 'url', $proposal['url'],
 		function($result) {
 			if(strlen($result) > 100) return '长度不能超过 100 byte';
 			return '';
 		},
 		null
 	);
-	$append_form->addInput('tag', 'text', 'tag', '',
+	$append_form->addInput('tag', 'text', 'tag', $proposal['tag'],
 		function($result) {
 			if(strlen($result) > 100) return '长度不能超过 100 byte';
 			return '';
 		},
 		null
 	);
-	$append_form->addInput('note', 'text', 'note', '',
+	$append_form->addInput('note', 'text', 'note', $proposal['note'],
 		function($result) {
 			if(strlen($result) > 100) return '长度不能超过 100 byte';
 			return '';
@@ -92,15 +94,14 @@
 	);
 
 	$append_form->handle = function() {
-		$delete_permission = isProblemCreator(Auth::user());
-
 		$id = $_POST['id'];
 		if ($id[0] == '-') {
 			$id = substr($id, 1);
-			if($delete_permission) DB::delete("delete from collection where id='$id'");
-			if($delete_permission) DB::delete("delete from collection_tags where collection_id='$id'");
+			DB::delete("delete from collection where id='$id'");
+			DB::delete("delete from collection_tags where collection_id='$id'");
 			return;
 		}
+		DB::delete("delete from collection_proposal where id='$id'");
 		$title = DB::escape($_POST['title']);
 		$url = DB::escape($_POST['url']);
 		$tag = DB::escape(strtolower($_POST['tag']));
@@ -117,7 +118,7 @@
 			DB::insert("insert into collection (id, title, url, note) values ('$id', '$title', '$url', '$note') on duplicate key update" . substr($upd_cmd, 1));
 		}
 		if($tag == '-') {
-			if($delete_permission) DB::delete("delete from collection_tags where collection_id='$id'");
+			DB::delete("delete from collection_tags where collection_id='$id'");
 		}
 		else if($tag != '' && DB::selectCount("select count(*) from collection where id = '$id'")) {
 			DB::insert("insert ignore into collection_tags (collection_id, tag) values ('$id', '$tag')");
@@ -126,6 +127,7 @@
 	$append_form->runAtServer();
 ?>
 <?php echoUOJPageHeader(UOJLocale::get('problem collection')) ?>
+<?php echo '剩余：' . DB::selectCount("select count(*) from collection_proposal"); ?>
 <?php $append_form->printHTML(); ?>
 <h3>约定</h3>
 选择一个题目所属的 OJ 时，按照以下顺序选择：
@@ -147,7 +149,7 @@
 	<tr><td>LOJ</td><td>loj1</td></tr>
 	<tr><td>SOJ</td><td>soj1</td></tr>
 	<tr><td>Luogu</td><td>lg1001</td></tr>
-	<tr><td>Codeforces Gym</td><td>cf111111a</td></tr>
+	<tr><td>Codeforces Gym</td><td>cf123456a</td></tr>
 </table>
 <ul>
 	<li>

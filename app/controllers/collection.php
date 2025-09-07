@@ -117,7 +117,7 @@ function changeProblemState(state, id) {
 		<ul class="nav nav-pills" role="tablist"><li><a href="/collection/propose"><span class="glyphicon glyphicon-send"></span>  <?= UOJLocale::get('propose') ?></a></li></ul>
 	</div>
 <?php endif?>
-<?php if(isProblemCreator(Auth::user()) || isBlogAllowedUser(Auth::user())):?>
+<?php if(isProblemCreator(Auth::user())):?>
 	<div class="col-xs-3 col-sm-3">
 		<ul class="nav nav-pills" role="tablist"><li><a href="/collection/manage"><span class="glyphicon glyphicon-cog"></span>  <?= UOJLocale::get('manage') ?></a></li></ul>
 	</div>

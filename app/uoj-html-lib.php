@@ -168,6 +168,8 @@ function getSubmissionJudgedStatusStr($result_error, $score, $uri = null) {
 		$html_type = 'span';
 		$head = $html_type;
 	}
+	$score = rtrim($score, '0');
+	$score = rtrim($score, '.');
 	if (isset($result_error))
 		return '<' . $head . " class=\"small\">$result_error</" . $html_type . '>';
 	else
@@ -1266,6 +1268,14 @@ class JudgementDetailsPrinter {
 			$this->_print_c($node);
 			echo '
 </pre>';
+		} elseif ($node->nodeName == 'err') {
+			if(count($node->childNodes)) {
+				echo '<h4>error (stderr):</h4><pre>
+';
+				$this->_print_c($node);
+				echo '
+</pre>';
+			}
 		} else {
 			echo '<', $node->nodeName;
 			foreach ($node->attributes as $attr) {

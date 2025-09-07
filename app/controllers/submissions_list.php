@@ -9,10 +9,10 @@
 	$common = 'class="form-control input-sm" ';
 	$q_problem_id = $search_form->addText('problem_id', UOJLocale::get('problems::problem id').':', $common . 'maxlength="4" style="width:4em"', 'validateUInt');
 	$q_submitter = $search_form->addText('submitter', UOJLocale::get('username').':', $common . 'maxlength="20" style="width:10em"', 'validateUsername');
-	$q_min_score = $search_form->addText('min_score', UOJLocale::get('score range').':', $common . 'maxlength="5" style="width:4em" placeholder="-∞"', 'validateInt');
-	$q_max_score = $search_form->addText('max_score', '~', $common . 'maxlength="5" style="width:4em" placeholder="+∞"', 'validateInt');
+	$q_min_score = $search_form->addText('min_score', UOJLocale::get('score range').':', $common . 'maxlength="5" style="width:4em" placeholder="-∞"', 'validateReal');
+	$q_max_score = $search_form->addText('max_score', '~', $common . 'maxlength="5" style="width:4em" placeholder="+∞"', 'validateReal');
 	$q_language = $search_form->addText('language', UOJLocale::get('problems::language').':', $common . 'maxlength="10" style="width:8em"', validateLength(10));
-	$q_cut_off_time = $search_form->addText('cut_off_time', UOJLocale::get('cut off time').':', $common . 'maxlength="20" style="width:14em; font-family: monospace" placeholder="YYYY-MM-DD[ hh:mm:ss]"', validateTime);
+	$q_cut_off_time = $search_form->addText('cut_off_time', UOJLocale::get('cut off time').':', $common . 'maxlength="20" style="width:14em; font-family: monospace" placeholder="YYYY-MM-DD[ hh:mm:ss]"', "validateTime");
 	$search_form->addSubmit(UOJLocale::get('search'));
 	
 	$conds = array();

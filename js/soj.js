@@ -548,7 +548,7 @@ $.fn.uoj_highlight = function() {
 		$(this).find("span.uoj-groupname").each(replaceWithHighlightUsername);
 		$(this).find(".uoj-honor").uoj_honor();
 		$(this).find(".uoj-score").each(function() {
-			var score_str = $(this).text(), score = parseInt(score_str), maxscore = parseInt($(this).data('max'));
+			var score_str = $(this).text(), score = parseFloat(score_str), maxscore = parseFloat($(this).data('max'));
 			if (score_str === '?') $(this).css("color", "rgb(0, 204, 204)");
 			else if (score_str.startsWith('+')) $(this).css("color", getColOfScore(100));
 			else if (score_str.startsWith('-')) $(this).css("color", getColOfScore(0));
